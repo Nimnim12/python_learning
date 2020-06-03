@@ -1,4 +1,3 @@
-import math
 
 example_board = [
     [1, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -36,8 +35,8 @@ def find_col_values(board, row, col, values):
 
 
 def find_square_values(board, row, col, values):
-    for i in range(3 * math.floor(row / 3), 3 * math.floor(row / 3) + 3):
-        for j in range(3 * math.floor(col / 3), 3 * math.floor(col / 3) + 3):
+    for i in range(3 * row // 3, 3 * row // 3 + 3):
+        for j in range(3 * col // 3, 3 * col // 3 + 3):
             if board[i][j] != 0:
                 values[board[i][j]] += 1
 
