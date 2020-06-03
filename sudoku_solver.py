@@ -17,6 +17,6 @@ def board_print(board):
             print(str(board[i][j]) + " ", end='')
             if j == 2 or j == 5:
                 print("| ", end='')
-        print("\n", end='')
+        print()
         if i == 2 or i == 5:
             print("---------------------")
