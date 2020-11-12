@@ -11,7 +11,6 @@ example_board = [
     [2, 0, 5, 3, 0, 0, 8, 0, 1],
 ]
 
-#TODO: add solved sudoku for reference
 
 def board_print(board):
     for i in range(9):
@@ -24,7 +23,6 @@ def board_print(board):
             print("---------------------")
 
 
-# TODO: add solved sudoku for reference
 def find_zero(board):
     for i in range(9):
         for j in range(9):
@@ -72,12 +70,15 @@ def find_values(board, row, col):
 def solve(board):
     if(find_zero(board) == None): return
     row,col = find_zero(board)
-    possible_answers = find_values(example_board,row,col)
+    possible_answers = find_values(board,row,col)
     for i in possible_answers:
-        example_board[row][col] = i
-        solve(example_board)
-        if (find_zero(board) == None): return
-    example_board[row][col] = 0
+        board[row][col] = i
+        solve(board)
+        if (find_zero(board) == None):
+            return
+
+    board[row][col] = 0
+    return
 
 
 def main():
