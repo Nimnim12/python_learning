@@ -182,9 +182,20 @@ class Gui:
         self.board.cells[row][col].value = value
         self.board.cells[row][col].set = True
 
+    def remove_value(self,row,col):
+        self.board.cells[row][col].value = 0
+        self.board.cells[row][col].set = False
+
     def add_possible_value(self, value, row, col):
         if (len(self.board.cells[row][col].potential_values) < 4):
             self.board.cells[row][col].potential_values.append(value)
+
+    def remove_possible_value(self,row,col):
+        position =len(self.board.cells[row][col].potential_values) - 1
+        del self.board.cells[row][col].potential_values[position]
+
+    def remove_all_possible_values(self, row, col):
+        self.board.cells[row][col].potential_values = []
 
     def check_if_done(self):
         return self.board.check_if_done()
@@ -276,66 +287,75 @@ def start_game(sudoku,screen):
                 if(pos[0]<sudoku.board.size[0] and pos[1]<sudoku.board.size[1]):
                     row, col = sudoku.clicked(pos)
                     clicked = True
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
-                    if sudoku.check_if_done():
-                        Tk().wm_withdraw()
-                        messagebox.showinfo("Ok","Sudoku complete!")
-                    else:
-                        Tk().wm_withdraw()
-                        messagebox.showinfo("Ok", "Sudoku not complete properly")
-                if event.key == pygame.K_SPACE:
-                    if sudoku.solve(screen):
-                        Tk().wm_withdraw()
-                        messagebox.showinfo("Ok", "Sudoku solved")
-                    else:
-                        Tk().wm_withdraw()
-                        messagebox.showinfo("Ok", "Sudoku not solvable")
-                if event.key == pygame.K_1:
-                    if pygame.key.get_mods() & pygame.KMOD_SHIFT:
-                        sudoku.add_possible_value(1, row, col)
-                    else:
-                        sudoku.set_value(1, row, col)
-                if event.key == pygame.K_2:
-                    if pygame.key.get_mods() & pygame.KMOD_SHIFT:
-                        sudoku.add_possible_value(2, row, col)
-                    else:
-                        sudoku.set_value(2, row, col)
-                if event.key == pygame.K_3:
-                    if pygame.key.get_mods() & pygame.KMOD_SHIFT:
-                        sudoku.add_possible_value(3, row, col)
-                    else:
-                        sudoku.set_value(3, row, col)
-                if event.key == pygame.K_4:
-                    if pygame.key.get_mods() & pygame.KMOD_SHIFT:
-                        sudoku.add_possible_value(4, row, col)
-                    else:
-                        sudoku.set_value(4, row, col)
-                if event.key == pygame.K_5:
-                    if pygame.key.get_mods() & pygame.KMOD_SHIFT:
-                        sudoku.add_possible_value(5, row, col)
-                    else:
-                        sudoku.set_value(5, row, col)
-                if event.key == pygame.K_6:
-                    if pygame.key.get_mods() & pygame.KMOD_SHIFT:
-                        sudoku.add_possible_value(6, row, col)
-                    else:
-                        sudoku.set_value(6, row, col)
-                if event.key == pygame.K_7:
-                    if pygame.key.get_mods() & pygame.KMOD_SHIFT:
-                        sudoku.add_possible_value(7, row, col)
-                    else:
-                        sudoku.set_value(7, row, col)
-                if event.key == pygame.K_8:
-                    if pygame.key.get_mods() & pygame.KMOD_SHIFT:
-                        sudoku.add_possible_value(8, row, col)
-                    else:
-                        sudoku.set_value(8, row, col)
-                if event.key == pygame.K_9:
-                    if pygame.key.get_mods() & pygame.KMOD_SHIFT:
-                        sudoku.add_possible_value(9, row, col)
-                    else:
-                        sudoku.set_value(9, row, col)
+            if clicked:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_DELETE:
+                        sudoku.remove_value(row,col)
+                        sudoku.remove_all_possible_values(row,col)
+                    if event.key == pygame.K_BACKSPACE:
+                        if pygame.key.get_mods() & pygame.KMOD_SHIFT:
+                            sudoku.remove_possible_value(row, col)
+                        else:
+                            sudoku.remove_value(row, col)
+                    if event.key == pygame.K_RETURN:
+                        if sudoku.check_if_done():
+                            Tk().wm_withdraw()
+                            messagebox.showinfo("Ok","Sudoku complete!")
+                        else:
+                            Tk().wm_withdraw()
+                            messagebox.showinfo("Ok", "Sudoku not complete properly")
+                    if event.key == pygame.K_SPACE:
+                        if sudoku.solve(screen):
+                            Tk().wm_withdraw()
+                            messagebox.showinfo("Ok", "Sudoku solved")
+                        else:
+                            Tk().wm_withdraw()
+                            messagebox.showinfo("Ok", "Sudoku not solvable")
+                    if event.key == pygame.K_1:
+                        if pygame.key.get_mods() & pygame.KMOD_SHIFT:
+                            sudoku.add_possible_value(1, row, col)
+                        else:
+                            sudoku.set_value(1, row, col)
+                    if event.key == pygame.K_2:
+                        if pygame.key.get_mods() & pygame.KMOD_SHIFT:
+                            sudoku.add_possible_value(2, row, col)
+                        else:
+                            sudoku.set_value(2, row, col)
+                    if event.key == pygame.K_3:
+                        if pygame.key.get_mods() & pygame.KMOD_SHIFT:
+                            sudoku.add_possible_value(3, row, col)
+                        else:
+                            sudoku.set_value(3, row, col)
+                    if event.key == pygame.K_4:
+                        if pygame.key.get_mods() & pygame.KMOD_SHIFT:
+                            sudoku.add_possible_value(4, row, col)
+                        else:
+                            sudoku.set_value(4, row, col)
+                    if event.key == pygame.K_5:
+                        if pygame.key.get_mods() & pygame.KMOD_SHIFT:
+                            sudoku.add_possible_value(5, row, col)
+                        else:
+                            sudoku.set_value(5, row, col)
+                    if event.key == pygame.K_6:
+                        if pygame.key.get_mods() & pygame.KMOD_SHIFT:
+                            sudoku.add_possible_value(6, row, col)
+                        else:
+                            sudoku.set_value(6, row, col)
+                    if event.key == pygame.K_7:
+                        if pygame.key.get_mods() & pygame.KMOD_SHIFT:
+                            sudoku.add_possible_value(7, row, col)
+                        else:
+                            sudoku.set_value(7, row, col)
+                    if event.key == pygame.K_8:
+                        if pygame.key.get_mods() & pygame.KMOD_SHIFT:
+                            sudoku.add_possible_value(8, row, col)
+                        else:
+                            sudoku.set_value(8, row, col)
+                    if event.key == pygame.K_9:
+                        if pygame.key.get_mods() & pygame.KMOD_SHIFT:
+                            sudoku.add_possible_value(9, row, col)
+                        else:
+                            sudoku.set_value(9, row, col)
 
         if clicked:
             sudoku.mark_square(screen, row, col)
@@ -348,15 +368,17 @@ def how_to_play():
     running = True
     help = ["1. Standard sudoku rules apply",
             "2. Press any number to write is as answer",
-            "3. Press any number with Shift to add it",
-            "    to list of potential answers"]
+            "3. Press backspace to delete answer",
+            "4. Press any number with Shift to add candidate",
+            "5. Press backspace with Shift to delete candidate",
+            "6. Press delete to delete all answers and candidates"]
     while(running):
         screen.fill((255,255,255))
-        font = pygame.font.SysFont("ComicSans", 75)
+        font = pygame.font.SysFont("ComicSans", 50)
         counter = 0
         for str in help:
             todraw = font.render(str, 1, (0, 0, 0))
-            screen.blit(todraw, (0, counter*100))
+            screen.blit(todraw, (0, counter*75))
             counter = counter +1
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
