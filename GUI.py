@@ -3,7 +3,7 @@ from tkinter import messagebox
 import random
 
 import pygame
-
+import pygame_menu
 import sudoku_solver
 from sudoku_solver import example_board
 
@@ -252,6 +252,13 @@ def main():
     board = Board(sudoku_solver.example_board)
     sudoku = Gui(board)
     screen = sudoku.create_window(1200, 900)
+    menu = pygame_menu.Menu(300, 400, 'Welcome',
+                            theme=pygame_menu.themes.THEME_BLUE)
+    menu.add_button('Play', start_game, sudoku, screen)
+    menu.add_button("How to play",how_to_play)
+    menu.add_button('Quit', pygame_menu.events.EXIT)
+    menu.mainloop(screen)
+def start_game(sudoku,screen):
     running = True
     clicked = False
     # Game Loop
@@ -336,6 +343,25 @@ def main():
         # this method is necessary for anything to happen
         pygame.display.update()
 
+def how_to_play():
+    screen = pygame.display.set_mode((1200,800))
+    running = True
+    help = ["1. Standard sudoku rules apply",
+            "2. Press any number to write is as answer",
+            "3. Press any number with Shift to add it",
+            "    to list of potential answers"]
+    while(running):
+        screen.fill((255,255,255))
+        font = pygame.font.SysFont("ComicSans", 75)
+        counter = 0
+        for str in help:
+            todraw = font.render(str, 1, (0, 0, 0))
+            screen.blit(todraw, (0, counter*100))
+            counter = counter +1
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+        pygame.display.update()
 
 if __name__ == '__main__':
     pygame.init()
